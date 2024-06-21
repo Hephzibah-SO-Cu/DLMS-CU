@@ -1,0 +1,29 @@
+{
+  "name": "nuxt-firebase-saas",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/image": "^1.7.0",
+    "@nuxt/ui": "^2.13.0",
+    "@types/uuid": "^9.0.8",
+    "@vueuse/nuxt": "^10.9.0",
+    "nuxt": "^3.10.1",
+    "nuxt-vuefire": "^1.0.2"
+  },
+  "dependencies": {
+    "@firebase/app-types": "^0.9.1",
+    "@vueup/vue-quill": "^1.2.0",
+    "firebase-admin": "^11.11.1",
+    "firebase-functions": "^4.6.0",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.7"
+  }
+}
