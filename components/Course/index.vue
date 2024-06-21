@@ -45,7 +45,8 @@ import type { Course } from "~/types";
 const db = useFirestore();
 const q = ref<any>(null);
 const user = useCurrentUser();
-const { data: courses, pending } = useCollection<Course>(q);
+const notification = useNotification();
+const { data: courses, pending, error } = useCollection<Course>(q);
 const isOpen = ref(false);
 const columns = [
   {
@@ -67,6 +68,15 @@ const columns = [
     direction: "desc" as const,
   },
 ];
+
+if (error.value) {
+  notification({
+    title: "Error",
+    description: error.value,
+    type: "error",
+    id: "error",
+  });
+}
 
 function select(course: Course) {
   // open to a new page

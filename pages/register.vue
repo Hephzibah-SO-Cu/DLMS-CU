@@ -60,7 +60,7 @@ const schema = z.object({
   lastname: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email(),
   password: z.string().min(6),
-  role: z.enum(["student", "instructor"], { message: "Invalid role" }),
+  role: z.enum(["student", "instructor", "admin"], { message: "Invalid role" }),
 });
 
 const state = reactive({
@@ -82,6 +82,10 @@ const options = [
     value: "instructor",
     label: "Instructor",
   },
+  {
+    value:  "admin",
+    label: "Admin",
+  }
 ];
 
 type Schema = z.output<typeof schema>;

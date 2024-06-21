@@ -17,7 +17,6 @@
           <UFormGroup name="title" label="Title">
             <UInput v-model="course.title" />
           </UFormGroup>
-
           <UFormGroup label="Description" name="description">
             <UTextarea
               autoresize
@@ -25,6 +24,14 @@
               :maxrows="10"
               :placeholder="'A brief detail of the course'"
             />
+          </UFormGroup>
+
+          <UFormGroup
+            name="keywords"
+            label="Keywords"
+            help="Keywords are tags for your course, so make sure each keyword is separated with a comma"
+          >
+            <UInput v-model="course.keywords" />
           </UFormGroup>
           <UButton type="submit" :loading="loading">
             {{ modalButton }}
@@ -57,6 +64,7 @@ const loading = ref(false);
 const course = ref({
   title: "",
   description: "",
+  keywords: "",
 });
 
 const isEditing = computed(() => !!editCourse.value);
@@ -67,6 +75,11 @@ const modalButton = computed(() => (isEditing.value ? "Update" : "Add"));
 const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  keywords: z
+    .string({
+      message: "At least a keyword is required",
+    })
+    .min(1, "At least a keyword is required"),
 });
 
 type CourseSchema = z.output<typeof courseSchema>;
@@ -79,7 +92,8 @@ async function onSubmit(event: FormSubmitEvent<CourseSchema>) {
     await updateCourse(
       editCourse.value.id!,
       data.title.toLowerCase(),
-      data.description
+      data.description,
+      data.keywords.toLowerCase()
     );
   } else {
     if (!user.value?.uid) {
@@ -90,6 +104,7 @@ async function onSubmit(event: FormSubmitEvent<CourseSchema>) {
       title: event.data.title.toLowerCase(),
       createdAt: new Date().toISOString(),
       instructorId: user.value.uid,
+      keywords: event.data.keywords.toLowerCase(),
     };
     await createCourse(data);
   }
@@ -103,6 +118,7 @@ watchEffect(() => {
     course.value = {
       description: "",
       title: "",
+      keywords: "",
     };
   }
 });
@@ -110,7 +126,8 @@ watchEffect(() => {
 async function updateCourse(
   courseId: string,
   newTitle: string,
-  newDescription: string
+  newDescription: string,
+  newKeywords: string
 ) {
   try {
     const docRef = doc(db, "courses", courseId);
@@ -119,10 +136,12 @@ async function updateCourse(
       title: newTitle,
       description: newDescription,
       updateAt: new Date().toISOString(),
+      keywords: newKeywords,
     });
     course.value = {
       description: "",
       title: "",
+      keywords: "",
     };
     notification({
       title: "Success",
@@ -151,6 +170,7 @@ async function createCourse(data: Course) {
     course.value = {
       description: "",
       title: "",
+      keywords: "",
     };
     notification({
       id: "success",

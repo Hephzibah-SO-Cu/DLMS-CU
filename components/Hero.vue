@@ -10,7 +10,7 @@
           Learn at Your Pace. Fast Track Your Learning.
         </h1>
         <p class="text-sm">
-          Short on time but eager to advance your career? Our eLearning platform offers a wide range of courses that fit into your busy schedule. Learn from top industry experts with easy-to-follow lessons, interactive exercises, and downloadable resources. Whether you're looking to master new skills or earn a certification, we have the courses to help you succeed.
+          Short on time but eager to advance your learning? Our eLearning platform offers a wide range of courses that fit into your busy schedule. Learn from top industry experts with easy-to-follow lessons, interactive exercises, and downloadable resources. Whether you're looking to master new skills or earn a certification, we have the courses to help you succeed.
         </p>
         <div>
           <UButton to="/courses"> Browse Courses Now! </UButton>

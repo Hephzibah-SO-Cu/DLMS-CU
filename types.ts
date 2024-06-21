@@ -13,6 +13,7 @@ export interface Course {
   id?: string
   title: string
   description: string
+  keywords:string
   createdAt?: string
   updatedAt?: string
   instructorId: string

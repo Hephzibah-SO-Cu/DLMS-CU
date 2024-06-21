@@ -1,7 +1,7 @@
 <template>
   <div v-if="course" class="space-y-4">
     <section class="space-y-3">
-      <Back to="/student/courses"/>
+      <Back to="/student/courses" />
 
       <div class="space-y-1">
         <CustomHeader :title="course?.title">
@@ -22,6 +22,11 @@
           </div>
         </CustomHeader>
         <p class="text-md">{{ course.description }}</p>
+        <div class="flex gap-2">
+          <span v-for="word in keywords(course.keywords)" :key="word">
+            <UBadge size="sm" variant="outline">{{ word }}</UBadge>
+          </span>
+        </div>
       </div>
       <div>
         <span class="text-sm text-gray-400">Instructor</span>
@@ -200,6 +205,14 @@ const checkEnrollment = async () => {
   }
 };
 
+const keywords = computed(() => {
+  return (keywordString) => {
+    // Split the keyword string by comma (",") and trim any whitespace
+    return keywordString
+      .split(",")
+      .map((keyword) => keyword.trim().replace(",", ""));
+  };
+});
 
 async function enrollCourse() {
   if (!user.value) {
@@ -317,6 +330,31 @@ async function unenrollCourse() {
     loading.value = false;
   }
 }
+
+// const q = ref<any>(null);
+// const { data: courses, pending, promise } = useCollection<Course>(q);
+// const isOpen = ref(false);
+
+// onMounted(() => {
+//   q.value = query(collection(db, "courses"), orderBy("createdAt", "desc"));
+//   function getCoursesWithKeyword(courses: Course[], keyword: string) {
+//     // Lowercase the keyword for case-insensitive search
+//     keyword = keyword.toLowerCase();
+//     console.log(courses, keyword);
+
+//     // Filter courses based on keyword presence in the keywords field (converted to lowercase)
+//     const filteredCourses = courses.filter((course) => {
+//       // Ensure keywords field exists and convert it to lowercase for comparison
+//       const courseKeywords = course.keywords?.toLowerCase();
+//       return courseKeywords && courseKeywords.includes(keyword);
+//     });
+
+//     return filteredCourses;
+//   }
+
+//   console.log(getCoursesWithKeyword(courses.value, course.value.keywords));
+// });
+
 // Call the function to check enrollment
 await checkEnrollment();
 await fetchInstructor();

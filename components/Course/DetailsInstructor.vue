@@ -1,6 +1,6 @@
 <template>
   <div v-if="course" class="space-y-4">
-    <Back to="/instructor/courses"/>
+    <Back to="/instructor/courses" />
     <section class="space-y-3">
       <CustomHeader :title="course?.title">
         <div class="flex gap-4 flex-wrap justify-end">
@@ -20,6 +20,11 @@
       <div class="space-y-1">
         <p class="text-xl text-gray-400">About The Course</p>
         <p class="text-">{{ course.description }}</p>
+        <div v-if="course.keywords" class="flex gap-2">
+          <span v-for="word in keywords(course.keywords)" :key="word">
+            <UBadge size="sm" variant="outline">{{ word }}</UBadge>
+          </span>
+        </div>
       </div>
     </section>
 
@@ -122,8 +127,11 @@ const items = [
 ];
 const { data: course } = useDocument<Course>(courseQuery);
 
-const { data: courseresources, pending } =
-  useCollection<CourseResource>(courseResourcesQuery);
+const {
+  data: courseresources,
+  pending,
+  error,
+} = useCollection<CourseResource>(courseResourcesQuery);
 
 onMounted(() => {
   if (user.value?.uid && course.value?.id) {
@@ -171,6 +179,15 @@ async function deleteResource(resource: CourseResource) {
     deleting.value = false;
   }
 }
+
+const keywords = computed(() => {
+  return (keywordString) => {
+    // Split the keyword string by comma (",") and trim any whitespace
+    return keywordString
+      .split(",")
+      .map((keyword) => keyword.trim().replace(",", ""));
+  };
+});
 
 async function deleteCourseAndResources(courseId: string) {
   try {
