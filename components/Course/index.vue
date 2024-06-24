@@ -69,14 +69,7 @@ const columns = [
   },
 ];
 
-if (error.value) {
-  notification({
-    title: "Error",
-    description: error.value,
-    type: "error",
-    id: "error",
-  });
-}
+
 
 function select(course: Course) {
   // open to a new page

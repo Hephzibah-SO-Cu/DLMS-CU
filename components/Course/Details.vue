@@ -73,6 +73,8 @@
         />
       </template>
     </UTabs>
+
+    <RecomendedCourses :courseId="course.id!" :keywords="course.keywords"/>
   </div>
   <Loading v-model:model-value="loading" />
 </template>
@@ -206,8 +208,10 @@ const checkEnrollment = async () => {
 };
 
 const keywords = computed(() => {
-  return (keywordString) => {
+  return (keywordString: string) => {
     // Split the keyword string by comma (",") and trim any whitespace
+  if (!keywordString) return [];
+
     return keywordString
       .split(",")
       .map((keyword) => keyword.trim().replace(",", ""));
